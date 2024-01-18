@@ -5,14 +5,9 @@ echo "
 用法: 
   $COMMAND_CHAIN [子命令] [选项]
 
-支持的子命令:
-"
+子命令: "
 
-# scripts 目录下的 *.sh 都是子命令
-# shellcheck disable=SC2010
-while read -r line; do
-  echo "  $line"
-done < <(ls -1 ./bin/scripts | grep -E '^.*\.sh$' | sed 's/\.sh$//g')
+output_sub_commands
 
 echo "
 选项:

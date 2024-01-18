@@ -8,11 +8,7 @@ https 证书操作
 
 子命令: "
 
-# scripts 目录下的 *.sh 都是子命令
-# shellcheck disable=SC2010
-while read -r line; do
-  echo "  $line"
-done < <(ls -1 ./bin/scripts/cert | grep -E '^.*\.sh$' | sed 's/\.sh$//g')
+output_sub_commands
 
 echo "
 选项:

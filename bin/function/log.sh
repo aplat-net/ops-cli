@@ -14,10 +14,6 @@ function log::warn() {
 
 function log::error() {
   log::output "${COLOR_RED}[ERROR]${COLOR_NONE} $*"
-  local i=0
-  while caller $i; do
-      i=$((i+1))
-  done
 }
 
 function log::debug() {
@@ -25,6 +21,10 @@ function log::debug() {
     return
   fi
   log::output "${COLOR_GRAY}[DEBUG]${COLOR_NONE} $*"
+  local i=0
+  while caller $i; do
+      i=$((i+1))
+  done
 }
 
 function log::success() {

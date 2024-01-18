@@ -9,4 +9,5 @@ echo "
 选项:
   -d, --domain  域名, 如 test.example.com
   -e, --email   邮箱, 如 test@example.com
+  -h, --help    显示帮助信息
 "
