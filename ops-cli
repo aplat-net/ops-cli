@@ -3,6 +3,8 @@
 PREVIOUS_DIR="$(pwd)"
 
 WORKING_DIR="$(dirname "$0")"
+# shellcheck disable=SC2034
+COMMAND_NAME="$0"
 cd "${WORKING_DIR}" || exit 1
 
 # shellcheck disable=SC1091
