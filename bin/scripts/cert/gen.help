@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-echo "
-生成 https 证书
+if [[ "$1" == "description" ]]; then
 
-用法:
-  $COMMAND_CHAIN [选项]
+  echo "生成 https 证书"
 
-选项:
+elif [[ "$1" == "sub_commands" ]]; then
+
+  # shellcheck disable=SC2005
+  echo ""
+
+elif [[ "$1" == "flags" ]]; then
+
+  echo "
   -d, --domain  域名, 如 test.example.com
   -e, --email   邮箱, 如 test@example.com
   -h, --help    显示帮助信息
 "
+
+fi

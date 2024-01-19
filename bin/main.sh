@@ -14,11 +14,11 @@ set -e
 # shellcheck disable=SC2034
 CURRENT_PATH="./bin/scripts"
 # shellcheck disable=SC2034
-COMMAND_CHAIN="$0"
+COMMAND_CHAIN="$(basename "$0")"
 
 if [[ "$1" == "--help" || "$1" == "-h" ]]; then
   # shellcheck disable=SC1091
-  . ./bin/main.help
+  output_help_info "./bin/main.help"
   exit 0
 fi
 

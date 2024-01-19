@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-echo "
+if [[ "$1" == "description" ]]; then
 
-用法: 
-  $COMMAND_CHAIN [子命令] [选项]
+  echo "运维命令行工具"
 
-子命令: "
+elif [[ "$1" == "sub_commands" ]]; then
 
-output_sub_commands
+  # shellcheck disable=SC2005
+  echo "$(output_sub_commands)"
 
-echo "
-选项:
+elif [[ "$1" == "flags" ]]; then
+
+  echo "
   -h, --help    显示帮助信息
 "
+
+fi
