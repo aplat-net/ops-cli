@@ -14,10 +14,10 @@ function handle_sub_command() {
 
   # 处理帮助信息
   if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-    log::debug "${CURRENT_PATH}.help"
-    if [[ -f "${CURRENT_PATH}.help" ]]; then
+    log::debug "${CURRENT_PATH}.sh.help"
+    if [[ -f "${CURRENT_PATH}.sh.help" ]]; then
       # shellcheck disable=SC1090
-      output_help_info "${CURRENT_PATH}.help"
+      output_help_info "${CURRENT_PATH}.sh.help"
       exit 0
     else
       log::error "找不到 ${COLOR_RED}${COMMAND_CHAIN}${COLOR_NONE} 的帮助信息."
@@ -48,7 +48,7 @@ function output_sub_commands() {
   done < <(ls -1 "$CURRENT_PATH" | grep -E '^.*\.sh$' | sed 's/\.sh$//g')
   # shellcheck disable=SC2010
   while read -r sh_file; do
-    help_file="${sh_file%.sh}.help"
+    help_file="${sh_file}.sh.help"
     if [[ -f "$CURRENT_PATH/$help_file" ]]; then
       # shellcheck disable=SC1090
       printf "  -  %-""$maxlen""s    %s\n" "$sh_file" "$(source "$CURRENT_PATH/$help_file" description)"
