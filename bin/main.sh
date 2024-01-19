@@ -18,7 +18,7 @@ COMMAND_CHAIN="$0"
 
 if [[ "$1" == "--help" || "$1" == "-h" ]]; then
   # shellcheck disable=SC1091
-  . ./bin/scripts/help.sh
+  . ./bin/main.help
   exit 0
 fi
 

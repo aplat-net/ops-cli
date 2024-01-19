@@ -12,6 +12,4 @@ output_sub_commands
 echo "
 选项:
   -h, --help    显示帮助信息
-
-如果想要打印调试信息, 请设置 export OPS_CLI_DEBUG=true
 "
