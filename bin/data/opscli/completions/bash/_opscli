@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+function _opscli::completion() {
+    local cur prev opts path
+
+    COMPREPLY=()
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    path="${HOME_OF_OPS_CLI}/bin/scripts"
+    for word in "${COMP_WORDS[@]:1:COMP_CWORD-1}"
+    do
+        path="${path}/${word}"
+    done
+
+    if [[ -d "${path}" ]]; then
+
+        if [[ -f "${path}/_completion.sh" ]]; then
+            opts="$(. "${path}/_completion.sh")"
+        else
+            opts=""
+            for sh in $(/bin/ls ${path}/*.sh); do
+                sh="$(/usr/bin/basename "$sh")"
+                opts="$opts ${sh%.*}"
+            done
+        fi
+            COMPREPLY=( $(compgen -o filenames -W "$opts" -- ${cur}) )
+    fi
+}
+# complete -F _ops_cli::completion "ops-cli"
+
+# http://kodango.com/bash-competion-programming
+# https://segmentfault.com/a/1190000002968878

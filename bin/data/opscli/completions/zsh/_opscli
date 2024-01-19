@@ -1,0 +1,37 @@
+#compdef opscli
+__opscli::completion() {
+    local path word opts sh end_index log_path
+    log_path="${HOME_OF_OPS_CLI}/.logs/_opscli.log"
+    echo "$log_path" >> "/data/workspace/aplat/deployment/ops-cli/.logs/test.log"
+    path="${HOME_OF_OPS_CLI}/bin/scripts"
+    # 如果 words 是以一个或多个空格结尾, 则 end_index 为 1, 否则为 2
+    # shellcheck disable=SC2154
+    end_index="$([[ "$words" =~ ^.*\\s+$ ]] && echo "1" || echo "2")"
+    for word in "${words[@]:1:((${#words} - $end_index))}" # 加了引号, 需要确认一下
+    do
+        path="${path}/${word}"
+    done
+
+
+    echo "$path" >> "$log_path"
+    if [[ -d "${path}" ]]; then
+
+        if [[ -f "${path}/_completion.sh" ]]; then
+            opts="$(. "${path}/_completion.sh")"
+        else
+            opts=""
+            for sh in $(/bin/ls ${path}/*.sh); do
+                sh="$(/usr/bin/basename "$sh")"
+                opts="$opts ${sh%.*}"
+            done
+        fi
+    fi
+    echo "$opts" >> "$log_path"
+    if [[ -n "$opts" ]]; then
+        _values "This is description" $(echo "$opts")
+    else
+        _arguments '*:files:_files'
+    fi
+}
+
+__opscli::completion
