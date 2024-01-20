@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 function _opscli::completion() {
-    local cur prev opts path
+    local cur prev opts path log_path
 
+    log_path="${HOME_OF_OPS_CLI}/.logs/_opscli.log"
     COMPREPLY=()
 
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -14,6 +15,7 @@ function _opscli::completion() {
         path="${path}/${word}"
     done
 
+    echo "path=${path};" >> "$log_path"
     if [[ -d "${path}" ]]; then
 
         if [[ -f "${path}/_completion.sh" ]]; then
@@ -25,7 +27,14 @@ function _opscli::completion() {
                 opts="$opts ${sh%.*}"
             done
         fi
-            COMPREPLY=( $(compgen -o filenames -W "$opts" -- ${cur}) )
+        COMPREPLY=( $(compgen -o filenames -W "$opts" -- ${cur}) )
+    elif [[ -f "${path}.sh.help" ]]; then
+        echo "$(. "${path}.sh.help" flags)" >> "$log_path"
+        # 获取 .sh.help 中 flags 中的 -h, --help 这种 flag
+        # shellcheck disable=SC1090
+        opts="$(. "${path}.sh.help" flags | /bin/grep -oP '(?:^\s*|\,\s?)\K(-\w+|--\w+)')"
+        echo "opts=$opts" >> "$log_path"
+        COMPREPLY=( $(compgen -o filenames -W "$opts" -- ${cur}) )
     fi
 }
 # complete -F _ops_cli::completion "ops-cli"
