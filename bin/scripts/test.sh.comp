@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "
+--test
+a
+b
+c
+-t
+-h
+--help
+"

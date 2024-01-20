@@ -14,22 +14,23 @@ __opscli::completion() {
 
 
     echo "path=${path};" >> "$log_path"
-    if [[ -d "${path}" ]]; then
 
-        if [[ -f "${path}/_completion.sh" ]]; then
-            opts="$(. "${path}/_completion.sh")"
-        else
+    if [[ -f "${path%/}.sh.comp" ]]; then
+        opts="$(. "${path%/}.sh.comp")"
+    else
+        if [[ -d "${path}" ]]; then
             opts=""
             for sh in $(/bin/ls ${path}/*.sh); do
                 sh="$(/usr/bin/basename "$sh")"
                 opts="$opts ${sh%.*}"
             done
         fi
-    elif [[ -f "${path%/}.sh.help" ]]; then
-        # path 最后包含一个 /, ${path%/} 是去掉最后一个 / 的
-        echo "$(. "${path%/}.sh.help" flags)" >> "$log_path"
-        # 获取 .sh.help 中 flags 中的 -h, --help 这种 flag
-        opts="$(. "${path%/}.sh.help" flags | /bin/grep -oP '(?:^\s*|\,\s?)\K(-\w+|--\w+)')"
+        if [[ ! -f "${path%/}.sh.comp" && -f "${path%/}.sh.help" ]]; then
+            # path 最后包含一个 /, ${path%/} 是去掉最后一个 / 的
+            echo "$(. "${path%/}.sh.help" flags)" >> "$log_path"
+            # 获取 .sh.help 中 flags 中的 -h, --help 这种 flag
+            opts="$opts $(. "${path%/}.sh.help" flags | /bin/grep -oP '(?:^\s*|\,\s?)\K(-\w+|--\w+)')"
+        fi
     fi
     echo "opts=$opts" >> "$log_path"
     if [[ -n "$opts" ]]; then
