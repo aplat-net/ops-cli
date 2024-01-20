@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-CERT_EMAIL="$CERT_DEFAULT_EMAIL"
 while [ -n "$1" ]; do
   if [[ "$1" == "--domain" || "$1" == "-d" ]]; then
-    CERT_DOMAIN="$2"
+    CERT_GEN_DOMAIN="$2"
     shift
   elif [[ "$1" == "--email" || "$1" == "-e" ]]; then
-    CERT_EMAIL="$2"
+    CERT_GEN_EMAIL="$2"
     shift
   else
     log::error "无法解析参数 $1"
@@ -16,12 +15,12 @@ while [ -n "$1" ]; do
 done
 
 
-if [[ -z "$CERT_DOMAIN" ]]; then
+if [[ -z "$CERT_GEN_DOMAIN" ]]; then
   log::error "请指定域名"
   exit 1
 fi
 
-if [[ -z "$CERT_EMAIL" ]]; then
+if [[ -z "$CERT_GEN_EMAIL" ]]; then
   log::error "请指定邮箱"
   exit 1
 fi
@@ -29,8 +28,8 @@ fi
 
 function generate_https_cert() {
   log::info "开始生成证书"
-  log::info "域名: $CERT_DOMAIN"
-  log::info "邮箱: $CERT_EMAIL"
+  log::info "域名: $CERT_GEN_DOMAIN"
+  log::info "邮箱: $CERT_GEN_EMAIL"
   local tmp_dir output_dir
   tmp_dir="$(pwd)/.tmp/$(date "+%Y%m%d_%H%M%S")"
   output_dir="$(pwd)/bin/secret/certs"
@@ -43,8 +42,8 @@ function generate_https_cert() {
     -e ALIYUN_CLI_ACCESS_KEY_ID="$ALI_DNS_ACCESS_KEY_ID" \
     -e ALIYUN_CLI_ACCESS_KEY_SECRET="$ALI_DNS_ACCESS_KEY_SECRET" \
     aiyax/certbot-dns-aliyun certonly \
-      -d "$CERT_DOMAIN" \
-      --email "$CERT_EMAIL" \
+      -d "$CERT_GEN_DOMAIN" \
+      --email "$CERT_GEN_EMAIL" \
       --manual \
       --non-interactive \
       --agree-tos \
@@ -56,7 +55,7 @@ function generate_https_cert() {
   mkdir -p "${tmp_dir}/certs"
   mkdir -p "$output_dir"
   cp -rL "${tmp_dir}"/etc/letsencrypt/live/* "$output_dir"
-  log::success "$CERT_DOMAIN 的证书已生成到 $output_dir 目录"
+  log::success "$CERT_GEN_DOMAIN 的证书已生成到 $output_dir 目录"
 }
 
 generate_https_cert

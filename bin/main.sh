@@ -4,8 +4,11 @@ set -e
 
 # shellcheck disable=SC1091
 . ./bin/function/sub-command-utils.sh
-# shellcheck disable=SC1091
-. ./bin/secret/prod.env
+# 可以将秘钥等内容放到 secret/cli.env 中引入
+if [[ -f "./bin/secret/cli.env" ]]; then
+  # shellcheck disable=SC1091
+  . ./bin/secret/cli.env
+fi
 
 # shellcheck disable=SC2034
 CURRENT_PATH="./bin/scripts"
