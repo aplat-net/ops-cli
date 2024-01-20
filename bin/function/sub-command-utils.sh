@@ -14,7 +14,7 @@ function handle_sub_command() {
 
   # 处理帮助信息
   if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-    log::debug "${CURRENT_PATH}.sh.help"
+    log::debug "help 文件: ${CURRENT_PATH}.sh.help"
     if [[ -f "${CURRENT_PATH}.sh.help" ]]; then
       # shellcheck disable=SC1090
       output_help_info "${CURRENT_PATH}.sh.help"
@@ -25,7 +25,7 @@ function handle_sub_command() {
     fi
   fi
 
-  log::debug "$CURRENT_PATH"
+  log::debug "CURRENT_PATH: $CURRENT_PATH"
   if [[ -f "${CURRENT_PATH}.sh" ]]; then
     # shellcheck disable=SC1090
     . "${CURRENT_PATH}.sh" "$@"

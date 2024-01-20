@@ -8,6 +8,16 @@ COMMAND_NAME="$0"
 cd "${WORKING_DIR}" || exit 1
 
 # shellcheck disable=SC1091
-. ./bin/main.sh "$@"
+. ./bin/function/constants.sh
+# shellcheck disable=SC1091
+. ./bin/function/log.sh
+
+# 打印输入的命令
+log::debug "${COLOR_GREEN}==============================================================${COLOR_NONE}"
+log::debug "${COLOR_GREEN}PREVIOUS_DIR:${COLOR_NONE} $PREVIOUS_DIR"
+log::debug "${COLOR_GREEN}用户输入命令:${COLOR_NONE}" "$0" "$@" 
+log::debug "${COLOR_GREEN}Ops CLI Version:${COLOR_NONE} $(git describe --tags 2>&1)" 
+# shellcheck disable=SC1091
+. ./bin/main.sh "$@" 2>&1 | tee -a "$LOG_FILE_PATH"
 
 cd "$PREVIOUS_DIR" || exit 1

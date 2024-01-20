@@ -6,3 +6,4 @@ log::error "Hello, world!" "This is a test."
 log::success "Hello, world!" "This is a test."
 log::debug "Hello, world!" "This is a test."
 log::debug
+log::trace "这是一个 trace log"
