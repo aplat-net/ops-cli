@@ -17,6 +17,8 @@ log::debug "${COLOR_GREEN}======================================================
 log::debug "${COLOR_GREEN}PREVIOUS_DIR:${COLOR_NONE} $PREVIOUS_DIR"
 log::debug "${COLOR_GREEN}用户输入命令:${COLOR_NONE}" "$0" "$@" 
 log::debug "${COLOR_GREEN}Ops CLI Version:${COLOR_NONE} $(git describe --tags 2>&1)" 
+
+# 注意这里使用了 tee 之后, docker 命令中不能再使用 -it, 只能使用 -i 或 -t, 组合在一起之后会导致命令卡死, 需要 kill 才行
 # shellcheck disable=SC1091
 . ./bin/main.sh "$@" 2>&1 | tee -a "$LOG_FILE_PATH"
 

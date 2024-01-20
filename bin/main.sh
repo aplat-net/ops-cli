@@ -5,7 +5,7 @@ set -e
 # shellcheck disable=SC1091
 . ./bin/function/sub-command-utils.sh
 # shellcheck disable=SC1091
-. ./bin/.env
+. ./bin/secret/prod.env
 
 # shellcheck disable=SC2034
 CURRENT_PATH="./bin/scripts"

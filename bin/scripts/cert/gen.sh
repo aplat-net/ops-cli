@@ -15,10 +15,17 @@ while [ -n "$1" ]; do
   shift
 done
 
+
 if [[ -z "$CERT_DOMAIN" ]]; then
-  log::error "请指定 --domain 参数"
+  log::error "请指定域名"
   exit 1
 fi
+
+if [[ -z "$CERT_EMAIL" ]]; then
+  log::error "请指定邮箱"
+  exit 1
+fi
+
 
 function generate_https_cert() {
   log::info "开始生成证书"
@@ -26,9 +33,10 @@ function generate_https_cert() {
   log::info "邮箱: $CERT_EMAIL"
   local tmp_dir output_dir
   tmp_dir="$(pwd)/.tmp/$(date "+%Y%m%d_%H%M%S")"
-  output_dir="$(pwd)/bin/data/certs"
+  output_dir="$(pwd)/bin/secret/certs"
 
-  sudo docker run -it --rm --name certbot-dns-aliyun \
+  # 注意这里不要加 -it, 否则会和 tee 冲突
+  sudo docker run -t --rm --name certbot-dns-aliyun \
     -v "${tmp_dir}/etc/letsencrypt:/etc/letsencrypt" \
     -v "${tmp_dir}/var/lib/letsencrypt:/var/lib/letsencrypt" \
     -v "${tmp_dir}/var/log/letsencrypt:/var/log/letsencrypt" \

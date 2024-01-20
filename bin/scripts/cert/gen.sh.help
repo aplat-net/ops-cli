@@ -12,7 +12,7 @@ elif [[ "$1" == "sub_commands" ]]; then
 elif [[ "$1" == "flags" ]]; then
 
   echo "
-  -d, --domain  域名, 如 test.example.com
+  -d, --domain  域名, 如 www.example.com, *.example.com
   -e, --email   邮箱, 如 test@example.com
   -h, --help    显示帮助信息
 "
