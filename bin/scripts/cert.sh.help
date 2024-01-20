@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ "$1" == "description" ]]; then
+if [[ "$1" == "short_description" ]]; then
 
   echo "https 证书操作"
+
+elif [[ "$1" == "description" ]]; then
+
+  echo "生成 https 证书等"
 
 elif [[ "$1" == "sub_commands" ]]; then
 
@@ -12,7 +16,7 @@ elif [[ "$1" == "sub_commands" ]]; then
 elif [[ "$1" == "flags" ]]; then
 
   echo "
-  -h, --help    显示帮助信息
+  -h,--help    显示帮助信息
 "
 
 fi

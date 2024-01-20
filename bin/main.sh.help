@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ "$1" == "description" ]]; then
+if [[ "$1" == "short_description" ]]; then
 
   echo "运维命令行工具"
 

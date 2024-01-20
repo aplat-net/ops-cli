@@ -51,7 +51,7 @@ function output_sub_commands() {
     help_file="${sh_file}.sh.help"
     if [[ -f "$CURRENT_PATH/$help_file" ]]; then
       # shellcheck disable=SC1090
-      printf "  -  %-""$maxlen""s    %s\n" "$sh_file" "$(source "$CURRENT_PATH/$help_file" description)"
+      printf "  -  %-""$maxlen""s    %s\n" "$sh_file" "$(source "$CURRENT_PATH/$help_file" short_description)"
     else
       printf "  -  %-""$maxlen""s\n" "$sh_file"
     fi
@@ -59,8 +59,10 @@ function output_sub_commands() {
 }
 
 function output_help_info() {
-  local help_file help_usage help_sub_commands help_flags help_description
+  local help_file help_usage help_sub_commands help_flags help_short_description help_description
   help_file="$1"
+  # shellcheck disable=SC1090
+  help_short_description="$(source "$help_file" short_description)"
   # shellcheck disable=SC1090
   help_description="$(source "$help_file" description)"
   # shellcheck disable=SC1090
@@ -76,7 +78,10 @@ function output_help_info() {
   fi
   echo ""
   echo "描述:"
-  echo "  $help_description"
+  echo "  $help_short_description"
+  if [[ -n "$help_description" ]]; then
+    echo "  $help_description"
+  fi
   echo ""
 
   echo "用法:"

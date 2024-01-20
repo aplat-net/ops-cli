@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ "$1" == "description" ]]; then
+if [[ "$1" == "short_description" ]]; then
 
   echo "ops-cli 自身的一些命令"
 

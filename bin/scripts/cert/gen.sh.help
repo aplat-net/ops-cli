@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ "$1" == "description" ]]; then
+if [[ "$1" == "short_description" ]]; then
 
   echo "生成 https 证书"
+
+elif [[ "$1" == "description" ]]; then
+
+  echo "需要环境变量 ALI_DNS_ACCESS_KEY_ID 和 ALI_DNS_ACCESS_KEY_SECRET"
 
 elif [[ "$1" == "sub_commands" ]]; then
 
