@@ -25,11 +25,30 @@ __opscli::completion() {
                 opts="$opts ${sh%.*}"
             done
         fi
-        if [[ ! -f "${path%/}.sh.comp" && -f "${path%/}.sh.help" ]]; then
+        if [[ -f "${path%/}.sh.help" ]]; then
             # path 最后包含一个 /, ${path%/} 是去掉最后一个 / 的
             echo "$(. "${path%/}.sh.help" flags)" >> "$log_path"
             # 获取 .sh.help 中 flags 中的 -h, --help 这种 flag
             opts="$opts $(. "${path%/}.sh.help" flags | /bin/grep -oP '(?:^\s*|\,\s?)\K(-\w+|--\w+)')"
+        elif [[ -f "${path%/}.sh.def" ]]; then
+            # path 最后包含一个 /, ${path%/} 是去掉最后一个 / 的
+
+            # shellcheck disable=SC1090
+            . "${path%/}.sh.def"
+            eval "$(get_def)"
+            # 获取 def 中定义的 flags 和 options
+            eval "${def_map["flags"]}"
+            eval "${def_map["options"]}"
+            # zsh 获取 key 的方式比较特别, 需要加上 (k)
+            for key in "${(k)options}"; do
+                # 获取到的 key 带有双引号, 要去掉
+                key="${key:gs/\"//}"
+                opts="$opts ${key//,/ }"
+            done
+            for key in "${(k)flags}"; do
+                key="${key:gs/\"//}"
+                opts="$opts ${key//,/ }"
+            done
         fi
     fi
     echo "opts=$opts" >> "$log_path"

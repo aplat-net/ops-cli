@@ -56,6 +56,9 @@ function output_sub_commands() {
     if [[ -f "$CURRENT_PATH/$help_file" ]]; then
       # shellcheck disable=SC1090
       printf "  -  %-""$maxlen""s    %s\n" "$sh_file" "$(source "$CURRENT_PATH/$help_file" short_description)"
+    elif [[ -f "$CURRENT_PATH/$help_file" ]]; then
+      # shellcheck disable=SC1090
+      printf "  -  %-""$maxlen""s    %s\n" "$sh_file" "$(source "$CURRENT_PATH/$help_file" short_description)"
     else
       printf "  -  %-""$maxlen""s\n" "$sh_file"
     fi

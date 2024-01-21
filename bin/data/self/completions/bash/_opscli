@@ -27,12 +27,25 @@ function _opscli::completion() {
                 opts="$opts ${sh%.*}"
             done
         fi
-        if [[ ! -f "${path}.sh.comp" && -f "${path}.sh.help" ]]; then
+        if [[ -f "${path}.sh.help" ]]; then
             echo "$(. "${path}.sh.help" flags)" >> "$log_path"
             # 获取 .sh.help 中 flags 中的 -h, --help 这种 flag
             # shellcheck disable=SC1090
             opts="$opts $(. "${path}.sh.help" flags | /bin/grep -oP '(?:^\s*|\,\s?)\K(-\w+|--\w+)')"
             echo "opts=$opts" >> "$log_path"
+        elif [[ -f "${path}.sh.def" ]]; then
+            # shellcheck disable=SC1090
+            . "${path}.sh.def"
+            eval "$(get_def)"
+            # 获取 def 中定义的 flags 和 options
+            eval "${def_map["flags"]}"
+            eval "${def_map["options"]}"
+            for key in "${!options[@]}"; do
+                opts="$opts ${key//,/ }"
+            done
+            for key in "${!flags[@]}"; do
+                opts="$opts ${key//,/ }"
+            done
         fi
     fi
     COMPREPLY=( $(compgen -o filenames -W "$opts" -- ${cur}) )
