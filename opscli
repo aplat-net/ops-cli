@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 PREVIOUS_DIR="$(pwd)"
 
 WORKING_DIR="$(dirname "$0")"
@@ -9,6 +11,15 @@ cd "${WORKING_DIR}" || exit 1
 . ./bin/function/constants.sh
 # shellcheck disable=SC1091
 . ./bin/function/log.sh
+# shellcheck disable=SC1091
+. ./bin/function/common-utils.sh
+# shellcheck disable=SC1091
+. ./bin/function/sub-command-utils.sh
+# 可以将秘钥等内容放到 secret/cli.env 中引入
+if [[ -f "./bin/secret/cli.env" ]]; then
+  # shellcheck disable=SC1091
+  . ./bin/secret/cli.env
+fi
 
 # 打印输入的命令
 log::debug "${COLOR_GREEN}==============================================================${COLOR_NONE}"

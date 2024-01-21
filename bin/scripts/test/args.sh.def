@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+function get_def() {
+  declare -A def_map=()
+  declare -A flags=()
+  declare -A options=()
+  declare -a pos_args=()
+
+  def_map["short_description"]="测试参数获取"
+  def_map["description"]=""
+
+  # def_map["sub_commands"]="$(output_sub_commands)"
+
+  flags["-x"]="测试XXXX"
+  flags["-h,--help"]="显示帮助信息"
+
+  options["-d,--domain"]="域名, 如 www.example.com, *.example.com"
+  options["-e,--email"]="邮箱, 如 test@example.com"
+
+  pos_args+=("a.txt")
+
+  def_map["flags"]="$(declare -p flags)"
+  def_map["options"]="$(declare -p options)"
+  def_map["pos_args"]="$(declare -p pos_args)"
+
+  declare -p def_map
+}
+
+
