@@ -110,7 +110,11 @@ function parse_args_with_def() {
   # 位置参数
   local -a pos_args
 
-  local key
+  local key pos arg
+
+  # 读取当前脚本的 def 文件
+  # shellcheck disable=SC1090
+  . "${CURRENT_PATH}.sh.def"
 
   # 读取 def_map
   eval "$(get_def)"
@@ -147,11 +151,20 @@ function parse_args_with_def() {
   # parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$(declare -p options_default_value_map)" "$@"
   eval "$(parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$(declare -p options_default_value_map)" "$@")"
   # declare -p args
+
   # 将参数赋值给 args_xxx 变量
   for key in "${!args[@]}"; do
     # echo "$key: ${args[$key]}"
     # args[$key] 来源于用户输入, 要使用 pringf '%q' 进行转义
     eval "args_$key=$(printf '%q' "${args[$key]}")"
+  done
+
+  # 将位置参数赋值给 args_pos_args_0, args_pos_args_1 变量, 并添加 args_pos_args_length
+  eval "local -a pos_args=${args[POS_ARGS]#*=}"
+  # shellcheck disable=SC2034
+  args_pos_args_length="${#pos_args[@]}"
+  for pos in "${!pos_args[@]}"; do
+    eval "args_pos_args_$pos=$(printf '%q' "${pos_args[$pos]}")"
   done
 }
 
