@@ -43,6 +43,7 @@ __opscli::completion() {
             for key in "${(k)options}"; do
                 # 获取到的 key 带有双引号, 要去掉
                 key="${key:gs/\"//}"
+                key="${key%%=*}"
                 opts="$opts ${key//,/ }"
             done
             for key in "${(k)flags}"; do

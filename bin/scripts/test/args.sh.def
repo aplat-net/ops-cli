@@ -17,7 +17,7 @@ function get_def() {
   flags["-x"]="测试XXXX"
   flags["-h,--help"]="显示帮助信息"
 
-  options["-d,--domain"]="域名, 如 www.example.com, *.example.com"
+  options["-d,--domain=www.test.com"]="域名, 如 www.example.com, *.example.com"
   options["-e,--email"]="邮箱, 如 test@example.com"
 
   pos_args+=("a.txt")

@@ -4,24 +4,6 @@
 
 # opscli test args -x --domain www.aplat.net a.txt b.txt --email "a@a.com" --email "b@b.com
 # opscli test args -x --domain www.aplat.net a.txt b.txt --email "a@a.com" -e 'rm /tmp/a.txt'
-declare -A flags_map=( ["-x,--xxx"]='xxx' )
-declare -A opts_map=( ["-d,--domain"]='domain' ["-e,--email"]='email' )
-
-echo "opts_map: ${opts_map["-e,--email"]}"
-# parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$@"
-parse_args "$(declare -p flags_map)" "$(declare -p opts_map)" "$@"
-declare -A args
-declare -a pos_args
-eval "$(parse_args "$(declare -p flags_map)" "$(declare -p opts_map)" "$@")"
-eval "declare -a pos_args=${args["POS_ARGS"]#*=}"
-
-echo "FLAG_XXX=${args["xxx"]}"
-echo "FLAG_XXX=${args[xxx]}"
-echo "OPT_DOMAIN=${args["domain"]}"
-echo "OPT_EMAIL=${args["email"]}"
-echo "POS_ARGS=${pos_args[*]}"
-
-echo "==================================================="
 
 # shellcheck disable=SC1090
 . "${CURRENT_PATH}.sh.def"

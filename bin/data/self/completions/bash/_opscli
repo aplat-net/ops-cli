@@ -41,6 +41,7 @@ function _opscli::completion() {
             eval "${def_map["flags"]}"
             eval "${def_map["options"]}"
             for key in "${!options[@]}"; do
+                key="${key%%=*}"
                 opts="$opts ${key//,/ }"
             done
             for key in "${!flags[@]}"; do

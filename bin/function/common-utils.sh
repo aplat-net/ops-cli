@@ -40,17 +40,27 @@ function trim() {
 #   echo "POS_ARGS=${pos_args[*]}"
 function parse_args() {
   local -A args
-  local -a flags options pos_args
+  local -a flags options options_default_value pos_args
+  local key
   # 接收的 $1, $2 会是这种格式, 其中变量名是外部定义的, 需要转换成内部的
   # declare -A opts_map=([-e,--email]="OPT_EMAIL" [-d,--domain]="OPT_DOMAIN" )
   # 比如上面的这个 opts_map, 需要转成 options_map, 所以要替换前半截内容
   eval "local -A flags_map=${1#*=}"
   eval "local -A options_map=${2#*=}"
+  eval "local -A options_default_value_map=${3#*=}"
   # echo "flags_map: $(declare -p flags_map)"
   # echo "options_map: $(declare -p options_map)"
+  # echo "options_default_value_map: $(declare -p options_default_value_map)"
   # echo "opts_map: ${opts_map["-e,--email"]}"
   # echo "options_map: ${options_map["-e,--email"]}"
-  shift 2
+  shift 3
+  # 给 options 赋初始值
+  for key in "${!options_map[@]}"; do
+    options_default_value="${options_default_value_map[$key]}"
+    if [[ -n "$options_default_value" ]]; then
+      args[${options_map[$key]}]="$options_default_value"
+    fi
+  done
   while [ -n "$1" ]; do
     # 处理 options
     # shellcheck disable=SC2154
@@ -94,11 +104,13 @@ function parse_args_with_def() {
   # 从 def 中读取的参数
   local -A def_map def_flags_map def_options_map
   # 要传递给 parse_args 的参数
-  local -A flags_map options_map
+  local -A flags_map options_map options_default_value_map
   # 全部参数
   local -A args
   # 位置参数
   local -a pos_args
+
+  local key
 
   # 读取 def_map
   eval "$(get_def)"
@@ -111,10 +123,16 @@ function parse_args_with_def() {
 
   flags_map=()
   options_map=()
+  options_default_value_map=()
 
   # 处理 options
   for key in "${!def_options_map[@]}"; do
-    options_map[$key]="$(get_arg_name "$key")"
+    # 获取参数名的时候, 要去掉默认值配置
+    options_map[${key%%=*}]="$(get_arg_name "${key%%=*}")"
+    # 如果有默认值, 提取默认值
+    if [[ $key == *"="* ]]; then
+      options_default_value_map[${key%%=*}]="${key#*=}"
+    fi
   done
   # 处理 flags
   # shellcheck disable=SC2154
@@ -126,7 +144,10 @@ function parse_args_with_def() {
   # declare -p options_map
 
   # echo '--------------------'
-  eval "$(parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$@")"
+  # parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$(declare -p options_default_value_map)" "$@"
+  eval "$(parse_args "$(declare -p flags_map)" "$(declare -p options_map)" "$(declare -p options_default_value_map)" "$@")"
+  # declare -p args
+  # 将参数赋值给 args_xxx 变量
   for key in "${!args[@]}"; do
     # echo "$key: ${args[$key]}"
     # args[$key] 来源于用户输入, 要使用 pringf '%q' 进行转义

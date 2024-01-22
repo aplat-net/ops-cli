@@ -68,6 +68,7 @@ function output_sub_commands() {
 function output_help_info_from_help() {
   local help_file 
   local help_usage help_sub_commands help_flags help_short_description help_description
+  local options_default_value
   help_file="$1"
   # shellcheck disable=SC1090
   help_short_description="$(source "$help_file" short_description)"
@@ -105,6 +106,8 @@ function output_help_info_from_def() {
   maxlen=0
   # 计算最长的 flags/options, 为格式化做准备
   for key in "${!def_options_map[@]}"; do
+    # 截取第一个等号之前的内容
+    key="${key%%=*}"
     len=${#key}
     if (( len > maxlen )); then
       maxlen=$len
@@ -119,14 +122,16 @@ function output_help_info_from_def() {
   done
 
   for key in "${!def_options_map[@]}"; do
-    help_flags="$help_flags\n$(printf "  %-""$maxlen""s    %s\n" "$key" "${def_options_map[$key]}")"
+    help_flags="$help_flags\n$(printf "  %-""$maxlen""s    %s\n" "${key%%=*}" "${def_options_map[$key]}")"
+    if [[ $key == *"="* ]]; then
+      help_flags="${help_flags} (默认值: ${key#*=})"
+    fi
   done
   # shellcheck disable=SC2154
   for key in "${!def_flags_map[@]}"; do
     help_flags="$help_flags\n$(printf "  %-""$maxlen""s    %s\n" "$key" "${def_flags_map[$key]}")"
   done
 
-  echo -e "$help_flags"
   help_sub_commands="${def_map["sub_commands"]}"
   help_short_description="${def_map["short_description"]}"
   help_description="${def_map["description"]}"
