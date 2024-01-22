@@ -12,6 +12,10 @@ function _opscli::completion() {
     path="${HOME_OF_OPS_CLI}/bin/scripts"
     for word in "${COMP_WORDS[@]:1:COMP_CWORD-1}"
     do
+        # 如果 word 是 - 开头的, 则结束拼接. - 开头的是 flags/options, 不是 path
+        if [[ "$word" =~ ^-.* ]]; then
+            break
+        fi
         path="${path}/${word}"
     done
 

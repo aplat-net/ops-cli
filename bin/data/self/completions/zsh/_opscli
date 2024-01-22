@@ -9,6 +9,10 @@ __opscli::completion() {
     end_index="$([[ "$words" =~ ^.*\\s+$ ]] && echo "1" || echo "2")"
     for word in "${words[@]:1:((${#words} - $end_index))}" # 加了引号, 需要确认一下
     do
+        # 如果 word 是 - 开头的, 则结束拼接. - 开头的是 flags/options, 不是 path
+        if [[ "$word" =~ ^-.* ]]; then
+            break
+        fi
         path="${path}/${word}"
     done
 
@@ -38,15 +42,16 @@ __opscli::completion() {
             eval "$(get_def)"
             # 获取 def 中定义的 flags 和 options
             eval "${def_map["flags"]}"
+            echo "${def_map["options"]}" >> "$log_path"
             eval "${def_map["options"]}"
             # zsh 获取 key 的方式比较特别, 需要加上 (k)
-            for key in "${(k)options}"; do
+            for key in ${(k)options}; do
                 # 获取到的 key 带有双引号, 要去掉
                 key="${key:gs/\"//}"
                 key="${key%%=*}"
                 opts="$opts ${key//,/ }"
             done
-            for key in "${(k)flags}"; do
+            for key in ${(k)flags}; do
                 key="${key:gs/\"//}"
                 opts="$opts ${key//,/ }"
             done
