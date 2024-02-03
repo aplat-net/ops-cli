@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-LOG_FILE_PATH=".logs/opscli.$(date "+%Y%m%d").log"
+mkdir -p "logs"
+
+LOG_FILE_PATH="logs/opscli.$(date "+%Y%m%d").log"
 
 function log::output() {
   echo -e "$(date "+%Y-%m-%dT%H:%M:%S") $*"

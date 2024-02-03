@@ -132,6 +132,7 @@ function output_help_info_from_def() {
     help_flags="$help_flags\n$(printf "  %-""$maxlen""s    %s\n" "$key" "${def_flags_map[$key]}")"
   done
 
+  help_usage="${def_map["usage"]}"
   help_sub_commands="${def_map["sub_commands"]}"
   help_short_description="${def_map["short_description"]}"
   help_description="${def_map["description"]}"
