@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+function get_def() {
+  declare -A def_map=()
+  declare -A flags=()
+  declare -A options=()
+  declare -a pos_args=()
+
+  def_map["short_description"]="连接内网与外网的 http 服务"
+  def_map["description"]="
+适用场景:
+  内网中部署的服务公网无法直接访问, 需要通过网关服务器进行转发.
+  例如内网中有一个服务是 https://test1.demo.com, 需要让它从外网也可以使用 https://test1.demo.com 访问.
+  请求路径如下:
+    https://test1.demo.com (需要先将域名 test1.demo.com 解析到公网服务器)
+    -> 公网服务器 Nginx, 转换 url 为网关服务器的地址, 并将子域名作为 path 传递
+    -> https://internal.demo.com:5678/test1 
+    -> 网关服务器 Nginx, 还原url 为原始访问的地址, 并转发请求至内网服务器.
+    -> https://test1.demo.com
+
+  包含两个子命令
+    1. external-start: 在公网服务器上执行, 启动一个 nginx, 将请求转发至网关服务器
+    2. internal-start: 在网关服务器上执行, 启动一个 nginx, 接收外网服务器的请求, 并转发至内网相应的服务器
+  "
+
+  # 自动补全的方法调用它的时候, 会没有 output_sub_commands 方法
+  if which output_sub_commands > /dev/null; then
+    def_map["sub_commands"]="$(output_sub_commands)"
+  fi
+
+
+  def_map["usage"]="opscli http-transfer [external-start|internal-start]"
+  def_map["flags"]="$(declare -p flags)"
+  def_map["options"]="$(declare -p options)"
+  def_map["pos_args"]="$(declare -p pos_args)"
+
+  declare -p def_map
+}
+

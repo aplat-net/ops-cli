@@ -97,7 +97,7 @@ echo "--test -t test"
 
 ### Log 文件
 
-opscli 会将 log 存到 .logs 目录下.
+opscli 会将 log 存到 logs 目录下.
 
 其中 `log::trace` 只会输出到 log 文件中
 

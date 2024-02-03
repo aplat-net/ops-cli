@@ -1,3 +1,4 @@
 .tmp
 .logs
+logs
 bin/secret
