@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+function get_def() {
+  declare -A def_map=()
+  declare -A flags=()
+  declare -A options=()
+  declare -a pos_args=()
+
+  def_map["short_description"]="Mysql 命令行客户端"
+  def_map["description"]="
+  注意, 该 client 使用 docker 实现, 请不要使用 localhost/127.0.0.1 作为主机名.
+  示例:
+    $COMMAND_CHAIN -u root -p root -h 192.168.0.1 -P 3306
+  "
+
+  options["-u,--user=root"]="用户名"
+  options["-p,--password"]="密码"
+  options["-P,--port=3306"]="端口号"
+  options["-h,--host=$(get_local_ip)"]="主机"
+
+  def_map["flags"]="$(declare -p flags)"
+  def_map["options"]="$(declare -p options)"
+  def_map["pos_args"]="$(declare -p pos_args)"
+
+  declare -p def_map
+}
+
