@@ -3,7 +3,8 @@
 function _opscli::completion() {
     local cur prev opts path log_path
 
-    log_path="${HOME_OF_OPS_CLI}/.logs/_opscli.log"
+    source "${HOME_OF_OPS_CLI}/bin/data/self/completions/empty_functions.sh"
+    log_path="${HOME_OF_OPS_CLI}/logs/_opscli.log"
     COMPREPLY=()
 
     cur="${COMP_WORDS[COMP_CWORD]}"

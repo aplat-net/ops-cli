@@ -160,7 +160,11 @@ function parse_args_with_def() {
   done
 
   # 将位置参数赋值给 args_pos_args_0, args_pos_args_1 变量, 并添加 args_pos_args_length
-  eval "local -a pos_args=${args[POS_ARGS]#*=}"
+  if [[ ${args[POS_ARGS]} == *"="* ]]; then
+    eval "local -a pos_args=${args[POS_ARGS]#*=}"
+  else
+    local -a pos_args=()
+  fi
   # shellcheck disable=SC2034
   args_pos_args_length="${#pos_args[@]}"
   for pos in "${!pos_args[@]}"; do
@@ -180,4 +184,9 @@ function get_arg_name() {
     output=$(printf "%s" "$input" | grep -o -- "-[^,]*" | head -n 1 | sed 's/-//')
   fi
   printf "%s\n" "$output"
+}
+
+# 获取本机的 IP 地址
+function get_local_ip() {
+  hostname -I | awk '{print $1}'
 }

@@ -1,6 +1,7 @@
 #compdef opscli
 __opscli::completion() {
     local path word opts sh end_index log_path
+    source "${HOME_OF_OPS_CLI}/bin/data/self/completions/empty_functions.sh"
     log_path="${HOME_OF_OPS_CLI}/logs/_opscli.log"
     echo "$log_path" >> "/data/workspace/aplat/deployment/ops-cli/logs/test.log"
     path="${HOME_OF_OPS_CLI}/bin/scripts"
