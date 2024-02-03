@@ -5,32 +5,35 @@ parse_args_with_def "$@"
 
 
 if [[ -z "$args_namespace" ]]; then
-  echo "请指定 --namespace"
+  log::error "请指定 --namespace"
   exit 1
 fi
 
 if [[ -z "$args_secret" ]]; then
-  echo "请指定 --secret"
+  log::error "请指定 --secret"
   exit 1
 fi
 
+# shellcheck disable=SC2154
 if [[ $args_pos_args_length -eq 0 ]]; then
-  echo "请指定域名"
+  log::error "请指定域名"
   exit 1
 fi
 
 if [[ $args_pos_args_length -gt 1 ]]; then
-  echo "只能指定一个域名"
+  log::error "只能指定一个域名"
   exit 1
 fi
 
+# shellcheck disable=SC2154
 if [[ ! -f "$args_path/${args_pos_args_0}/$args_key" ]]; then
-  echo "私钥文件不存在: $args_path/${args_pos_args_0}/$args_key"
+  log::error "私钥文件不存在: $args_path/${args_pos_args_0}/$args_key"
   exit 1
 fi
 
+# shellcheck disable=SC2154
 if [[ ! -f "$args_path/${args_pos_args_0}/$args_cert" ]]; then
-  echo "证书文件不存在: $args_path/${args_pos_args_0}/$args_cert"
+  log::error "证书文件不存在: $args_path/${args_pos_args_0}/$args_cert"
   exit 1
 fi
 

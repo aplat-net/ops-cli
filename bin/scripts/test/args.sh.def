@@ -9,10 +9,7 @@ function get_def() {
   def_map["short_description"]="测试参数获取"
   def_map["description"]=""
 
-  # 自动补全的方法调用它的时候, 会没有 output_sub_commands 方法
-  if which output_sub_commands > /dev/null; then
-    def_map["sub_commands"]="$(output_sub_commands)"
-  fi
+  def_map["sub_commands"]="$(output_sub_commands)"
 
   flags["-x"]="测试XXXX"
   flags["-h,--help"]="显示帮助信息"
