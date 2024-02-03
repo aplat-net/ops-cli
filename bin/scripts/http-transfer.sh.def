@@ -23,10 +23,7 @@ function get_def() {
     2. internal-start: 在网关服务器上执行, 启动一个 nginx, 接收外网服务器的请求, 并转发至内网相应的服务器
   "
 
-  # 自动补全的方法调用它的时候, 会没有 output_sub_commands 方法
-  if which output_sub_commands > /dev/null; then
-    def_map["sub_commands"]="$(output_sub_commands)"
-  fi
+  def_map["sub_commands"]="$(output_sub_commands)"
 
 
   def_map["usage"]="opscli http-transfer [external-start|internal-start]"
