@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+function get_def() {
+  declare -A def_map=()
+  declare -A flags=()
+  declare -A options=()
+  declare -a pos_args=()
+
+  def_map["short_description"]="快速启动一个 mysql"
+  def_map["description"]="
+  示例:
+    $COMMAND_CHAIN -p root -P 3309 --name test
+  "
+
+  options["-p,--password=root"]="root用户密码"
+  options["-P,--port=3309"]="端口号"
+  options["-n,--name"]="docker 容器名称"
+
+  def_map["flags"]="$(declare -p flags)"
+  def_map["options"]="$(declare -p options)"
+  def_map["pos_args"]="$(declare -p pos_args)"
+
+  declare -p def_map
+}
+
